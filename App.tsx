@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -55,6 +55,22 @@ const UPCOMING_EVENTS: Event[] = [
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.HOME);
   const [selectedSermonId, setSelectedSermonId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Update document title based on page
+    const baseTitle = "Hope Chapel - Kahawa Wendani";
+    const pageTitles: Record<Page, string> = {
+      [Page.HOME]: "Home",
+      [Page.SERMONS]: "Sermons",
+      [Page.SERMON_DETAIL]: "Sermon",
+      [Page.EVENTS]: "Events",
+      [Page.GIVING]: "Giving",
+      [Page.ABOUT]: "About Us",
+      [Page.CONTACT]: "Contact Us"
+    };
+    
+    document.title = `${pageTitles[currentPage]} | ${baseTitle}`;
+  }, [currentPage]);
 
   const handleSermonSelect = (id: string) => {
     setSelectedSermonId(id);
