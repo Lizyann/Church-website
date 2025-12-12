@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, MapPin, PlayCircle } from 'lucide-react';
+import { Calendar, Clock, MapPin, PlayCircle, ArrowRight } from 'lucide-react';
 import { Event, Sermon, Page } from '../types';
 
 interface FeaturesProps {
@@ -49,45 +49,54 @@ const Features: React.FC<FeaturesProps> = ({ upcomingEvents, latestSermons, onNa
     };
 
     const timer = setInterval(calculateTimeLeft, 1000);
-    calculateTimeLeft(); // Initial call
+    calculateTimeLeft(); 
 
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="py-20 bg-white">
+    <div className="bg-white">
       <div className="container mx-auto px-4">
         
-        {/* Next Event Timer / Banner */}
-        <div className="bg-hope-secondary text-white rounded-2xl p-8 md:p-12 -mt-32 relative z-10 shadow-xl mb-20 flex flex-col md:flex-row items-center justify-between gap-8">
-          <div className="text-center md:text-left">
-            <h3 className="text-hope-primary uppercase font-bold tracking-widest text-sm mb-2">Next Service</h3>
-            <h2 className="font-serif text-3xl font-bold">Sunday Worship Service</h2>
-            <div className="flex items-center gap-4 mt-4 text-gray-300 justify-center md:justify-start">
-               <span className="flex items-center gap-2"><Clock size={16} /> 10:00 AM</span>
-               <span className="flex items-center gap-2"><MapPin size={16} /> Main Sanctuary</span>
+        {/* Next Event Timer - Overlapping Hero */}
+        <div className="relative z-20 -mt-20 mb-24">
+          <div className="bg-hope-primary text-white p-8 md:p-10 rounded-none shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-10 max-w-5xl mx-auto">
+            <div className="text-center lg:text-left">
+              <h3 className="uppercase font-bold tracking-widest text-xs md:text-sm mb-3 text-white/80">Join Us This Sunday</h3>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Sunday Worship</h2>
+              <p className="text-white/90 flex items-center justify-center lg:justify-start gap-2 text-sm md:text-base">
+                 <Clock size={16} /> 10:00 AM • Main Sanctuary
+              </p>
             </div>
-          </div>
-          <div className="flex gap-4">
-             {Object.entries(timeLeft).map(([unit, val]) => (
-               <div key={unit} className="flex flex-col items-center">
-                 <div className="w-14 h-14 md:w-16 md:h-16 bg-white/10 rounded-lg flex items-center justify-center text-xl md:text-2xl font-bold font-serif mb-1 backdrop-blur-sm shadow-inner border border-white/5">
-                   {val}
+
+            <div className="flex gap-4 md:gap-6">
+               {Object.entries(timeLeft).map(([unit, val]) => (
+                 <div key={unit} className="flex flex-col items-center">
+                   <div className="text-4xl md:text-5xl font-bold font-serif leading-none mb-1">
+                     {val}
+                   </div>
+                   <span className="text-[10px] uppercase tracking-widest text-white/70">
+                     {unit}
+                   </span>
                  </div>
-                 <span className="text-[10px] md:text-xs uppercase text-gray-400 tracking-wider">
-                   {unit}
-                 </span>
-               </div>
-             ))}
+               ))}
+            </div>
+            
+            <button 
+              onClick={() => onNavigate(Page.EVENTS)}
+              className="bg-hope-secondary hover:bg-gray-900 text-white px-8 py-3 rounded-full font-bold uppercase text-xs tracking-wider transition-all shadow-lg hidden lg:block"
+            >
+              Event Details
+            </button>
           </div>
         </div>
 
-        {/* Latest Sermons */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <span className="text-hope-primary font-bold uppercase tracking-widest">Inspiration</span>
-            <h2 className="text-4xl font-serif font-bold text-gray-800 mt-2">Latest Sermons</h2>
-            <div className="w-24 h-1 bg-hope-primary mx-auto mt-6"></div>
+        {/* Latest Sermons Section */}
+        <div className="mb-24">
+          <div className="text-center mb-16">
+            <span className="text-hope-primary font-bold uppercase tracking-widest text-sm">Spiritual Growth</span>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mt-3 mb-4">Latest Sermons</h2>
+            <div className="w-16 h-1 bg-hope-primary mx-auto"></div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -95,73 +104,82 @@ const Features: React.FC<FeaturesProps> = ({ upcomingEvents, latestSermons, onNa
               <div 
                 key={sermon.id} 
                 onClick={() => onSermonSelect(sermon.id)}
-                className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer"
+                className="group cursor-pointer"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-64 overflow-hidden rounded-lg mb-6">
                   <img 
                     src={sermon.imageUrl} 
                     alt={sermon.title} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <PlayCircle size={48} className="text-white transform scale-90 group-hover:scale-100 transition-transform" />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-hope-primary shadow-lg transform scale-50 group-hover:scale-100 transition-transform duration-300">
+                      <PlayCircle size={32} fill="currentColor" className="text-white" />
+                    </div>
+                  </div>
+                  <div className="absolute top-4 left-4 bg-hope-primary text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded">
+                    {sermon.date}
                   </div>
                 </div>
-                <div className="p-6">
-                  <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
-                    <Calendar size={12} /> {sermon.date}
-                  </div>
-                  <h3 className="font-serif text-xl font-bold text-gray-800 mb-2 group-hover:text-hope-primary transition-colors">
+                <div className="text-center">
+                  <h3 className="font-serif text-2xl font-bold text-gray-800 mb-2 group-hover:text-hope-primary transition-colors">
                     {sermon.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-4">By {sermon.preacher}</p>
-                  <p className="text-gray-600 text-sm line-clamp-3 mb-4">
-                    {sermon.description}
-                  </p>
+                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-4">By {sermon.preacher}</p>
                 </div>
               </div>
             ))}
           </div>
-          <div className="text-center">
-            <button 
-              onClick={() => onNavigate(Page.SERMONS)}
-              className="inline-block border-2 border-hope-secondary text-hope-secondary px-8 py-3 rounded-full font-bold hover:bg-hope-secondary hover:text-white transition-colors"
-            >
-              View All Sermons
-            </button>
-          </div>
         </div>
 
-        {/* Ministries / About Preview */}
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-           <div className="relative">
-             <div className="absolute top-4 left-4 w-full h-full border-4 border-hope-primary rounded-xl"></div>
-             <img 
-               src="https://images.unsplash.com/photo-1544427920-c49ccfb85579?q=80&w=600&auto=format&fit=crop" 
-               alt="Community" 
-               className="relative rounded-xl shadow-lg z-10 w-full object-cover h-[400px]"
-             />
-           </div>
+        {/* Welcome / About Section */}
+        <div className="grid md:grid-cols-2 gap-16 items-center mb-24">
            <div>
-             <span className="text-hope-primary font-bold uppercase tracking-widest">Who We Are</span>
-             <h2 className="text-4xl font-serif font-bold text-gray-800 mt-2 mb-6">A Community of Faith in Kahawa Wendani</h2>
-             <p className="text-gray-600 leading-relaxed mb-6">
-               Hope Chapel is more than just a building; it's a family. Located in the heart of Kahawa Wendani, we are dedicated to serving our community, spreading the Gospel, and providing a home for everyone who seeks God's grace.
+             <span className="text-hope-primary font-bold uppercase tracking-widest text-sm">Welcome to Hope Chapel</span>
+             <h2 className="text-4xl font-serif font-bold text-gray-900 mt-4 mb-6 leading-tight">
+               Connecting People to God and to One Another
+             </h2>
+             <p className="text-gray-600 leading-relaxed mb-6 text-lg">
+               We believe that church is more than a service on the weekend. It’s about connecting with others, growing in your faith, and building a strong foundation for your family.
              </p>
-             <ul className="space-y-4 mb-8">
-               {['Biblical Teaching', 'Vibrant Worship', 'Community Outreach', 'Youth & Kids Ministry'].map((item, i) => (
-                 <li key={i} className="flex items-center gap-3">
-                   <div className="w-2 h-2 bg-hope-primary rounded-full"></div>
-                   <span className="font-serif text-lg text-gray-800">{item}</span>
-                 </li>
-               ))}
-             </ul>
+             <div className="space-y-4 mb-8">
+               <div className="flex items-start gap-4">
+                 <div className="w-12 h-12 rounded-full bg-hope-primary/10 flex items-center justify-center text-hope-primary shrink-0">
+                   <Calendar size={24} />
+                 </div>
+                 <div>
+                   <h4 className="font-serif font-bold text-lg">Biblical Teaching</h4>
+                   <p className="text-sm text-gray-500">Grounded in the Word of God.</p>
+                 </div>
+               </div>
+               <div className="flex items-start gap-4">
+                 <div className="w-12 h-12 rounded-full bg-hope-primary/10 flex items-center justify-center text-hope-primary shrink-0">
+                   <MapPin size={24} />
+                 </div>
+                 <div>
+                   <h4 className="font-serif font-bold text-lg">Community Focused</h4>
+                   <p className="text-sm text-gray-500">Serving Kahawa Wendani with love.</p>
+                 </div>
+               </div>
+             </div>
              <button 
               onClick={() => onNavigate(Page.ABOUT)}
-              className="text-hope-primary font-bold border-b-2 border-hope-primary pb-1 hover:text-hope-secondary hover:border-hope-secondary transition-colors"
+              className="flex items-center gap-2 text-hope-secondary font-bold uppercase tracking-wider text-sm hover:text-hope-primary transition-colors group"
              >
-               Read Our History
+               More About Us <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform" />
              </button>
+           </div>
+           
+           <div className="relative pl-8 pb-8">
+             <div className="absolute top-0 left-0 w-2/3 h-2/3 bg-hope-primary/10 -z-10 rounded-tl-3xl"></div>
+             <img 
+               src="https://images.unsplash.com/photo-1544427920-c49ccfb85579?q=80&w=800&auto=format&fit=crop" 
+               alt="Community" 
+               className="rounded-lg shadow-2xl w-full object-cover h-[500px]"
+             />
+             <div className="absolute bottom-10 -left-6 bg-white p-6 shadow-xl rounded-lg max-w-xs hidden md:block border-l-4 border-hope-primary">
+               <p className="font-serif italic text-gray-600">"A place where you can belong, believe, and become."</p>
+             </div>
            </div>
         </div>
 
