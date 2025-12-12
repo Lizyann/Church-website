@@ -6,6 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, (process as any).cwd(), '');
   return {
     plugins: [react()],
+    base: './', // Ensures assets are linked relatively (fixes blank page on GitHub Pages)
     define: {
       // Safely replace process.env.API_KEY with the environment variable during build
       'process.env.API_KEY': JSON.stringify(env.API_KEY || ''),
