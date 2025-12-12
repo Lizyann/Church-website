@@ -13,10 +13,11 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div 
         className="absolute inset-0 bg-cover bg-center transition-transform duration-10000 hover:scale-105"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=1920&auto=format&fit=crop")', 
+          // Worship/Church interior image with warm lighting
+          backgroundImage: 'url("https://images.unsplash.com/photo-1510936111840-655664ce9637?q=80&w=1920&auto=format&fit=crop")', 
         }}
       >
-         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30 mix-blend-multiply"></div>
+         <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/40 mix-blend-multiply"></div>
       </div>
 
       <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center text-white pt-20">
